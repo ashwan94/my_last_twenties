@@ -1,6 +1,24 @@
-from PIL import Image
+from flask import Flask
+import os
 
-# 바탕화면 경로에 있는 이미지 불러오기
-image_path = "/Users/na/Desktop/IMG_6840.JPG"  # 바탕화면 경로에 맞게 수정하세요
-image = Image.open(image_path)
-image.show()  # 이미지를 열어서 확인
+# static 폴더의 절대 경로 지정
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+static_path = os.path.join(base_dir, 'static')
+
+app = Flask(__name__, static_folder=static_path, static_url_path='/static')
+
+@app.route('/')
+def home():
+    return '''
+    <html>
+        <body>
+            <h1>샘플 이미지</h1>
+            <img src="/static/Images/sample.png" alt="샘플 이미지">
+        </body>
+    </html>
+    '''
+
+if __name__ == '__main__':
+    print("static 경로:", static_path)
+    print("이미지 존재?", os.path.exists(os.path.join(static_path, 'Images/sample.png')))
+    app.run(debug=True)
